@@ -1,18 +1,16 @@
 # ripego
 
+[![Build Status](https://travis-ci.org/alxark/ripego.svg?branch=master)](https://travis-ci.org/alxark/ripego)
+
 This package detects the coordination center for the IPv4 address and makes IP Whois lookup. Retrieve all informations about IP adress. Supported registries: ripe, arin, apnic, afrinic, lacnic
 
-
-Bu paket IPv4 adresini ilgili koordinasyon merkezini tespit ederek Whois sorgulaması yapar ve IP hakkında bilgiyi getirir. Desteklediği kordinasyon merkezleri: ripe, arin, apnic, afrinic, lacnic
-
-
-### Install / Yükleme
+### Install
 
 ```bash
 $ go get github.com/c1982/ripego
 ```
 
-### Usage / Kullanım
+### Usage
 
 ```go
 package main
