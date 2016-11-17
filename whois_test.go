@@ -5,21 +5,6 @@ import (
 	"testing"
 )
 
-/*
-func TestWhois(t *testing.T) {
-
-	info, err := IPLookup("178.18.196.250")
-
-	if err != nil {
-		t.Error(err)
-	}
-
-	t.Log(info.Inetnum)
-	t.Log(info.Netname)
-	t.Log(info.Person.Name)
-	t.Log(info.Route.Origin)
-}*/
-
 func TestNicProvider(t *testing.T) {
 
 	w := getNicProvider("1.5.5.1")
@@ -56,5 +41,4 @@ func TestNicProvider(t *testing.T) {
 	if reflect.TypeOf(w).Name() != "arin" {
 		t.Fatal("Invalid type: arin")
 	}
-
 }

@@ -2,18 +2,16 @@ package ripego
 
 import (
 	"errors"
-
-	"github.com/sebastianbroekhoven/go-get-ianawhois"
 )
 
 var getNic = make(map[string]Whois)
 
 const (
 	afrinic_whois_server = "whois.afrinic.net"
-	apnic_whois_server   = "whois.apnic.net"
-	arin_whois_server    = "whois.arin.net"
-	lacnic_whois_server  = "whois.lacnic.net"
-	ripe_whois_server    = "whois.ripe.net"
+	apnic_whois_server = "whois.apnic.net"
+	arin_whois_server = "whois.arin.net"
+	lacnic_whois_server = "whois.lacnic.net"
+	ripe_whois_server = "whois.ripe.net"
 )
 
 func init() {
@@ -22,16 +20,6 @@ func init() {
 	getNic["arin"] = arin{}
 	getNic["lacnic"] = lacnic{}
 	getNic["ripe"] = ripe{}
-}
-
-// IpLookup function for lagacy, not breaking stuff
-func IpLookup(ipaddr string) (w WhoisInfo, err error) {
-	if !isValidIp(ipaddr) {
-		return w, errors.New("Invalid IPv4 address: " + ipaddr)
-	}
-
-	w, err = getNicProvider(ipaddr).Check(ipaddr)
-	return w, err
 }
 
 // IPLookup function that returns IP information at provider and returns information.
@@ -50,12 +38,12 @@ func IPv4Lookup(ipaddr string) (w WhoisInfo, err error) {
 		return w, errors.New("Invalid IPv4 address: " + ipaddr)
 	}
 
-	resp, err := whois.Query(ipaddr)
+	resp, err := Query(ipaddr)
 	if err != nil {
 		return w, errors.New("Query failed for: " + ipaddr)
 	}
 
-	server, org := whois.Server(resp)
+	_, org, err := Server(resp)
 
 	if org == "afrinic" {
 		w, err = AfrinicCheck(ipaddr)
@@ -69,23 +57,21 @@ func IPv4Lookup(ipaddr string) (w WhoisInfo, err error) {
 		w, err = RipeCheck(ipaddr)
 	}
 
-	println(server)
-	// w, err = getNicProvider(ipaddr).Check(ipaddr)
 	return w, err
 }
 
-// IPv6Lookup function that returns IP information at provider and returns information.
+// Search information about IPv6 IP address
 func IPv6Lookup(ipaddr string) (w WhoisInfo, err error) {
 	if !isValidIPv6(ipaddr) {
 		return w, errors.New("Invalid IPv6 address: " + ipaddr)
 	}
 
-	resp, err := whois.Query(ipaddr)
+	resp, err := Query(ipaddr)
 	if err != nil {
 		return w, errors.New("Query failed for: " + ipaddr)
 	}
 
-	server, org := whois.Server(resp)
+	_, org, err := Server(resp)
 
 	if org == "afrinic" {
 		w, err = AfrinicCheck(ipaddr)
@@ -99,8 +85,6 @@ func IPv6Lookup(ipaddr string) (w WhoisInfo, err error) {
 		w, err = RipeCheck6(ipaddr)
 	}
 
-	println(server)
-	// w, err = getNicProvider(ipaddr).Check(ipaddr)
 	return w, err
 }
 
