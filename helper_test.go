@@ -79,10 +79,8 @@ source:         RIPE # Filtered
 % This query was served by the RIPE Database Query Service version 1.85.1 (DB-3)`
 )
 
-/*
 func TestTcpContent(t *testing.T) {
-
-	d, err := GetTcpContent("178.18.196.250", "whois.ripe.net")
+	d, err := getTcpContent("178.18.196.250", "whois.ripe.net")
 
 	if err != nil {
 		t.Fatal(err.Error())
@@ -91,7 +89,7 @@ func TestTcpContent(t *testing.T) {
 	if d == "" {
 		t.Fatal("TCP data obtained")
 	}
-}*/
+}
 
 func TestReadLineValue(t *testing.T) {
 
