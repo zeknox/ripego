@@ -111,6 +111,7 @@ type Whois interface {
 
 // WhoisInfo struct with information on IP address range.
 type WhoisInfo struct {
+	Noc          string
 	Inetnum      string
 	Netname      string
 	Descr        string

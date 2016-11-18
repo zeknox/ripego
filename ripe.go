@@ -12,6 +12,7 @@ func RipeCheck(search string) (w WhoisInfo, err error) {
 	}
 
 	wi := WhoisInfo{}
+	wi.Noc = "RIPE"
 	wi.Inetnum = parseRPSLValue(whoisData, "inetnum", "inetnum")
 	wi.Netname = parseRPSLValue(whoisData, "inetnum", "netname")
 	wi.AdminC = parseRPSLValue(whoisData, "inetnum", "admin-c")

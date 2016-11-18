@@ -1,30 +1,66 @@
 package ripego
 
+import (
+	"net/http"
+	"fmt"
+	"io/ioutil"
+	"encoding/xml"
+	"errors"
+)
+
 type arin struct {
 }
 
+type Org struct {
+	Code string `xml:"handle,attr"`
+	Name string `xml:"name,attr"`
+}
+
+type Net struct {
+	Name         string `xml:"name"`
+	EndAddress   string `xml:"endAddress"`
+	StartAddress string `xml:"startAddress"`
+	OrgInfo      Org `xml:"orgRef"`
+	LastModified string `xml:"updateDate"`
+	Created      string `xml:"registrationDate"`
+}
+
 func ArinCheck(search string) (w WhoisInfo, err error) {
-	whoisData, err := getTcpContent(search, arin_whois_server)
+	w = WhoisInfo{}
+
+	resp, err := http.Get("https://" + arin_whois_server + "/rest/ip/" + search)
 
 	if err != nil {
 		return w, err
 	}
+	defer resp.Body.Close()
 
-	wi := WhoisInfo{}
-	wi.Inetnum = parseRPSLValue(whoisData, "NetRange", "NetRange")
-	wi.Netname = parseRPSLValue(whoisData, "NetRange", "NetName")
-	wi.Organization = parseRPSLValue(whoisData, "NetRange", "Organization")
-	wi.Created = parseRPSLValue(whoisData, "NetRange", "RegDate")
-	wi.LastModified = parseRPSLValue(whoisData, "NetRange", "Updated")
-	wi.Status = parseRPSLValue(whoisData, "NetRange", "NetType")
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return w, errors.New("Failed to parse reply body, got: " + err.Error())
+	}
 
-	rt := WhoisRoute{}
-	rt.Origin = parseRPSLValue(whoisData, "NetRange", "OriginAS")
-	rt.Route = parseRPSLValue(whoisData, "NetRange", "CIDR")
+	return parseArinReply(body)
+}
 
-	wi.Route = rt
+func parseArinReply(xmlreply []byte) (w WhoisInfo, err error) {
+	w = WhoisInfo{}
 
-	return wi, err
+	v := Net{}
+	err = xml.Unmarshal(xmlreply, &v)
+	if err != nil {
+		fmt.Printf("error to parse")
+		return w, err
+	}
+
+	w.Inetnum = v.StartAddress + " - " + v.EndAddress
+	w.Netname = v.Name
+	w.Organization = v.OrgInfo.Name
+	w.Noc = "ARIN"
+	w.Created = v.Created
+	w.LastModified = v.LastModified
+
+	return w, err
 }
 
 func (r arin) Check(search string) (w WhoisInfo, err error) {
