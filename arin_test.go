@@ -43,7 +43,7 @@ func TestArinParser(t *testing.T) {
 }
 func TestArinWhois(t *testing.T) {
 	// This is a megafon NAT IP, belongs to RIPE
-	w, err := ArinCheck("8.8.8.8")
+	w, err := ArinCheck("8.8.8.8", "whois.arin.net")
 	if err != nil {
 		t.Fatal("Failed to download RIPE data")
 	}
