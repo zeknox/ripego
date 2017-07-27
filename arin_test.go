@@ -1,6 +1,7 @@
 package ripego
 
 import (
+	"bytes"
 	"testing"
 )
 
@@ -33,7 +34,7 @@ const (
 )
 
 func TestArinParser(t *testing.T) {
-	w, err := parseArinReply([]byte(ARIN_XML_REPLY))
+	w, err := parseArinReply(bytes.NewReader([]byte(ARIN_XML_REPLY)))
 	if err != nil {
 		t.Fatalf("Failed to parse XML reply, got: %s", err.Error())
 	}

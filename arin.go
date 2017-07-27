@@ -2,8 +2,7 @@ package ripego
 
 import (
 	"encoding/xml"
-	"errors"
-	"io/ioutil"
+	"io"
 	"net/http"
 )
 
@@ -30,17 +29,12 @@ func ArinCheck(search string, whoisServer string) (*WhoisInfo, error) {
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, errors.New("Failed to parse reply body, got: " + err.Error())
-	}
-
-	return parseArinReply(body)
+	return parseArinReply(resp.Body)
 }
 
-func parseArinReply(xmlreply []byte) (*WhoisInfo, error) {
+func parseArinReply(r io.Reader) (*WhoisInfo, error) {
 	v := Net{}
-	err := xml.Unmarshal(xmlreply, &v)
+	err := xml.NewDecoder(r).Decode(&v)
 	if err != nil {
 		return nil, err
 	}
