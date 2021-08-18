@@ -73,45 +73,45 @@ func getIPv6Server(ip net.IP) string {
 
 // WhoisInfo struct with information on IP address range.
 type WhoisInfo struct {
-	Noc          string
-	Inetnum      string
-	Netname      string
-	Descr        string
-	Country      string
-	Organization string
-	AdminC       string
-	TechC        string
-	MntLower     string
-	Status       string
-	MntBy        string
-	Created      string
-	LastModified string
-	Source       string
-	MntRoutes    string
+	Noc          string `json:"noc,omitempty"`
+	Inetnum      string `json:"inetnum,omitempty"`
+	Netname      string `json:"netname,omitempty"`
+	Descr        string `json:"descr,omitempty"`
+	Country      string `json:"country,omitempty"`
+	Organization string `json:"organization,omitempty"`
+	AdminC       string `json:"admin,omitempty"`
+	TechC        string `json:"tech,omitempty"`
+	MntLower     string `json:"mntLower,omitempty"`
+	Status       string `json:"status,omitempty"`
+	MntBy        string `json:"mntBy,omitempty"`
+	Created      string `json:"created,omitempty"`
+	LastModified string `json:"lastModified,omitempty"`
+	Source       string `json:"source,omitempty"`
+	MntRoutes    string `json:"mntRoutes,omitempty"`
 	Person       WhoisPerson
 	Route        WhoisRoute
 }
 
 // WhoisPerson struct for Person information from provider.
 type WhoisPerson struct {
-	Name         string
-	Address      string
-	Phone        string
-	AbuseMailbox string
-	NicHdl       string
-	MntBy        string
-	Created      string
-	LastModified string
-	Source       string
+	Name         string `json:"name,omitempty"`
+	Address      string `json:"address,omitempty"`
+	Phone        string `json:"phone,omitempty"`
+	AbuseMailbox string `json:"abuseMailbox,omitempty"`
+	NicHdl       string `json:"nicHdl,omitempty"`
+	MntBy        string `json:"mntBy,omitempty"`
+	Created      string `json:"created,omitempty"`
+	LastModified string `json:"lastModified,omitempty"`
+	Source       string `json:"source,omitempty"`
 }
 
 // WhoisRoute struct for Route and Network information from provider.
 type WhoisRoute struct {
-	Route        string
-	Descr        string
-	Origin       string
-	MntBy        string
-	Created      string
-	LastModified string
-	Source       string
+	Route        string `json:"route,omitempty"`
+	Descr        string `json:"descr,omitempty"`
+	Origin       string `json:"origin,omitempty"`
+	MntBy        string `json:"mntBy,omitempty"`
+	Created      string `json:"created,omitempty"`
+	LastModified string `json:"lastModified,omitempty"`
+	Source       string `json:"source,omitempty"`
 }
